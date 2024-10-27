@@ -531,18 +531,23 @@ body:after {
   z-index: 100;
   width: 100%; }
   .sticky-wrapper .site-navbar {
+    background: white;
     -webkit-transition: .3s all ease;
     -o-transition: .3s all ease;
-    transition: .3s all ease; }
+    transition: .3s all ease; 
+  }
+  .sticky-wrapper .transparent_nav{
+    background: transparent;
+  }
   .sticky-wrapper .site-navbar {
     border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
     .sticky-wrapper .site-navbar .site-menu-toggle {
       color: #fff; }
-    .sticky-wrapper .site-navbar .site-logo a {
+    .sticky-wrapper .site-navbar .transparent_nav a {
       color: #fff; }
-    .sticky-wrapper .site-navbar .site-menu > li > a {
+    .sticky-wrapper .site-navbar .transparent_nav > li > a {
       color: rgba(255, 255, 255, 0.7) !important; }
-      .sticky-wrapper .site-navbar .site-menu > li > a:hover, .sticky-wrapper .site-navbar .site-menu > li > a.active {
+      .sticky-wrapper .site-navbar .transparent_nav > li > a:hover, .sticky-wrapper .site-navbar .transparent_nav > li > a.active {
         color: #fff !important; }
   .sticky-wrapper.is-sticky .site-navbar {
     background: #fff;
