@@ -7,6 +7,9 @@ body {
   color: gray;
   font-weight: 400;
   font-size: 1rem; }
+:root{
+  --first-color:#fd7e14;
+}
 
 ::-moz-selection {
   background: #000;
@@ -2107,3 +2110,40 @@ figure figcaption {
     .single-text .owl-dots .owl-dot.active > span {
       width: 20px;
       background-color: #fff; }
+
+/* Model PopUp Style */
+/* ============ OTP verification ============ */
+.OTP_form form{
+  display: grid;
+  text-align: center;
+  align-items: center;
+  border-radius: 16px;
+  align-content: space-evenly;
+}
+.otp{
+  display: flex;
+  background: initial;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+}
+.otp input{
+  outline: none;
+  max-width: 40px;
+  font-size: 25px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid #aaa;
+  transition: all 0.1s;
+}
+.otp input:focus{
+  border: 2px solid var(--first-color);
+  box-shadow: 0 0 5px 5px #fd7e1499;
+}
+.otp span{
+  gap: 3px;
+  color: var(--first-color);
+  font-size: 14px;
+  font-weight: 500;
+}
