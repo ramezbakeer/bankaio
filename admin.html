@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Banker &mdash; Admin Panel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/aos.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+      /* Styling for inputs and buttons */
+      input, select {
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        margin-bottom: 10px;
+      }
+
+      /* Admin card animations */
+      .admin-card {
+        border: 1px solid #e0e0e0;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .admin-panel {
+        padding: 40px 0;
+      }
+
+      /* Admin Panel Section */
+.admin-panel {
+  background-color: #ffffff;
+  padding: 80px 0;
+}
+
+
+.section-title {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 50px;
+  font-weight: bold;
+}
+
+.admin-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  transition: all 0.3s ease-in-out;
+  color: #fff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-card h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #000000;
+}
+
+.admin-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+
+.form-control::placeholder {
+  color: #bbb;
+}
+
+.btn {
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: #fd7e14;
+  color: #fff;
+}
+
+.btn-warning {
+  background-color: #fd7e14;
+  color: #333;
+}
+
+.btn-info {
+  background-color: #fd7e14;
+  color: #fff;
+}
+
+.btn-success {
+  background-color: #fd7e14;
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: #fd7e14;
+  color: #fff;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.admin-card:hover {
+  background-color: #ffffff;
+  transform: translateY(-5px);
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.text-white {
+  color: white;
+}
+
+
+.user-form {
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#user-form input {
+  border: 1px solid #ced4da;
+  border-radius: 30px;
+  padding: 10px;
+}
+
+.btn {
+  border-radius: 30px;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+
+    </style>
+    
+  </head>
+
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+    <div class="site-wrap">
+
+      <!-- Header Section -->
+      <header class="site-navbar js-sticky-header site-navbar-target" style="background-color: black;">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-6 col-xl-2">
+              <h1 class="mb-0 site-logo">
+                <a href="index.html" class="h2 mb-0">Banker<span class="text-primary">.</span></a>
+              </h1>
+            </div>
+            <div class="col-12 col-md-10 d-none d-xl-block">
+              <nav class="site-navigation position-relative text-right">
+                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                  <li><a href="index.html" class="nav-link">Home</a></li>
+                  <li><a href="#about-section" class="nav-link">About Us</a></li>
+                  <li><a href="#contact-section" class="nav-link">Contact</a></li>
+                </ul>
+              </nav>
+            </div>
+            <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3">
+              <a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a>
+            </div>
+          </div>
+        </div>
+      </header>
+<br><br>
+      <!-- Admin Panel Section -->
+      <section class="admin-panel">
+        <div class="container">
+          <h2 class="section-title text-black">Admin Panel</h2>
+          <div class="row">
+
+            <!-- User Management -->
+            <div class="col-lg-6 mb-4">
+              <div class="admin-card">
+                <h3>User Management</h3>
+                <button class="btn btn-primary" id="create-user-btn" style="background-color: #000000;">Create User</button>
+                <div id="user-form" class="user-form" style="display: none;">
+                  <input type="text" class="form-control" placeholder="First Name" required>
+                  <input type="text" class="form-control" placeholder="Last Name" required>
+                  <input type="text" class="form-control" placeholder="Phone Number">
+                  <input type="text" class="form-control" placeholder="Address">
+                  <input type="text" class="form-control" placeholder="City">
+                  <input type="text" class="form-control" placeholder="Country">
+                  <input type="text" id="national-id" class="form-control" placeholder="National ID (14 digits)" maxlength="14" required>
+                  <button class="btn btn-success mt-2">Submit User</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Block/Remove User -->
+            <div class="col-lg-6 mb-4">
+              <div class="admin-card">
+                <h3>Block/Remove User</h3>
+                <form id="block-remove-form">
+                  <input type="text" class="form-control" placeholder="Username" required>
+                  <input type="text" id="block-national-id" class="form-control" placeholder="National ID (14 digits)" maxlength="14" required>
+                  <button type="submit" class="btn btn-danger mt-2">Remove User</button>
+                  <button type="submit" class="btn btn-danger mt-2">Block User</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- User Status & Transactions Section -->
+          <div class="col-lg-6 mb-4">
+            <div class="admin-card transactions-box">
+              <h3>Account Status & Transactions</h3>
+              <div class="admin-controls">
+                <input type="text" class="form-control" id="username" placeholder="Enter Username" required>
+                <input type="text" class="form-control" id="user-national-id" placeholder="National ID (14 digits)" maxlength="14" required>
+                <button class="btn btn-info mt-2" id="check-status-btn">Show Status & Transactions</button>
+
+                <!-- Display User Status and Transaction Logs -->
+                <div id="user-status" class="mt-4" style="display:none;">
+                  <h4>User Status</h4>
+                  <p><strong>Account Status:</strong> <span id="account-status">Active</span></p>
+                  <p><strong>Last Login:</strong> <span id="last-login">2024-10-27 14:33</span></p>
+
+                  <h4>Transaction Logs</h4>
+                  <div class="transaction-log" id="transaction-log">
+                    <ul>
+                      <li>Transfer to Bank A - $500</li>
+                      <li>Payment to Bank B - $1,000</li>
+                      <li>Received from User X - $300</li>
+                      <li>Loan Payment to Bank C - $200</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            
+
+            <!-- Role Management -->
+            <div class="col-lg-6 mb-4">
+              <div class="admin-card">
+                <h3>Role Management</h3>
+                <select class="form-select">
+                  <option value="admin">Admin</option>
+                  <option value="manager">Manager</option>
+                  <option value="employee">Employee</option>
+                </select>
+                <button class="btn btn-info mt-2">Assign Role</button>
+              </div>
+            </div>
+
+            <!-- Product Management -->
+            <div class="col-lg-6 mb-4">
+              <div class="admin-card">
+                <h3>Product Management</h3>
+                <input type="number" class="form-control" placeholder="Loan Rate (%)">
+                <input type="number" class="form-control" placeholder="Service Fee ($)">
+                <button class="btn btn-danger mt-2">Update Products</button>
+              </div>
+            </div>
+            
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Toggle User Form
+      document.getElementById('create-user-btn').addEventListener('click', function () {
+        const userForm = document.getElementById('user-form');
+        userForm.style.display = userForm.style.display === 'none' ? 'block' : 'none';
+      });
+
+      // National ID Validation
+      document.querySelectorAll('#national-id, #block-national-id').forEach(input => {
+        input.addEventListener('input', function () {
+          if (this.value.length > 14) this.value = this.value.slice(0, 14);
+        });
+      });
+
+      // Handle Block/Remove User Submission
+      document.getElementById('block-remove-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const username = e.target.elements[0].value;
+        const nationalID = e.target.elements[1].value;
+        alert(`User ${username} with ID ${nationalID} has been blocked/removed.`);
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">About Us</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque facere laudantium magnam voluptatum autem. Amet aliquid nesciunt veritatis aliquam.</p>
+              </div>
+              <div class="col-md-3 ml-auto">
+                <h2 class="footer-heading mb-4">Quick Links</h2>
+                <ul class="list-unstyled">
+                  <li><a href="#about-section" class="smoothscroll">Terms</a></li>
+                  <li><a href="#about-section" class="smoothscroll">Policy</a></li>
+                  <li><a href="#about-section" class="smoothscroll">About Us</a></li>
+                  <li><a href="#services-section" class="smoothscroll">Services</a></li>
+                  <li><a href="#testimonials-section" class="smoothscroll">Testimonials</a></li>
+                  <li><a href="#contact-section" class="smoothscroll">Contact Us</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3 footer-social">
+                <h2 class="footer-heading mb-4">Follow Us</h2>
+                <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <h2 class="footer-heading mb-4">Subscribe Newsletter</h2>
+            <form action="#" method="post" class="footer-subscribe">
+              <div class="input-group mb-3">
+                <input type="text" class="form-control border-secondary text-white bg-transparent" placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-primary text-black" type="button" id="button-addon2">Send</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p class="copyright"><small>
+              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></small></p>
+        
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+  </div class="site-wrap">
+  </body>
+</html>
