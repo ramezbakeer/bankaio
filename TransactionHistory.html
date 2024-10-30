@@ -15,6 +15,11 @@
     <link rel="stylesheet" href="fonts/icomoon/style.css" />
 
     <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
     <link rel="stylesheet" href="css/jquery-ui.css" />
     <link rel="stylesheet" href="css/owl.carousel.min.css" />
     <link rel="stylesheet" href="css/owl.theme.default.min.css" />
@@ -111,80 +116,141 @@
         </div>
       </div>
     </header>
-
+    <div class="container mt-5 mt-md-0">
+      <div class="row mb-5">
+        <div class="col-12 text-center transaction-head">
+          <h2 class="section-title mb-4">Transaction History</h2>
+          <p class="h5 w-75 mx-auto mb-4">All About Your Transaction</p>
+        </div>
+      </div>
+    </div>
     <section
-      class="site-section bg-light"
-      id="fundTransfer-section"
+      class="container py-5 bg-light"
+      id="TransactionHistory-section"
       data-aos="fade"
     >
-      <div class="container mt-5 mt-md-0">
-        <div class="row mb-5">
-          <div class="col-12 text-center transaction-head">
-            <h2 class="section-title mb-4">Transfer Funds</h2>
-            <p class="h5 w-75 mx-auto mb-4">
-              Quickly send money between accounts or to other banks. Just select
-              the accounts, enter the amount, and complete your secure transfer
-              with real-time updates.
-            </p>
+      <!-- Filter Dropdown -->
+      <div class="d-flex justify-content-end mb-3">
+        <div class="dropdown">
+          <button
+            class="btn btn-outline-primary dropdown-toggle"
+            type="button"
+            id="filterDropdown"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i class="fas fa-filter mr-2"></i>
+            <span>Filter</span>
+          </button>
+
+          <div
+            class="dropdown-menu dropdown-menu-right"
+            aria-labelledby="filterDropdown"
+          >
+            <a class="dropdown-item" href="#" onclick="filterAll()"
+              >All Transactions</a
+            >
+            <a
+              class="dropdown-item"
+              href="#"
+              onclick="filterStatus('Successful')"
+              >Successful</a
+            >
+            <a class="dropdown-item" href="#" onclick="filterStatus('Pending')"
+              >Pending</a
+            >
+            <a class="dropdown-item" href="#" onclick="filterStatus('Failed')"
+              >Failed</a
+            >
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" onclick="filterByAmount(0, 100)"
+              >Amount: 0 - 100</a
+            >
+            <a class="dropdown-item" href="#" onclick="filterByAmount(101, 500)"
+              >Amount: 101 - 500</a
+            >
+            <a
+              class="dropdown-item"
+              href="#"
+              onclick="filterByAmount(501, 1000)"
+              >Amount: 501 - 1000</a
+            >
+            <a class="dropdown-item" href="#" onclick="filterByAmount(1001)"
+              >Amount: > 1000</a
+            >
+            <div class="dropdown-divider"></div>
+            <input
+              type="date"
+              class="dropdown-item"
+              onchange="filterByDate(this.value)"
+              placeholder="Filter by Date"
+            />
           </div>
         </div>
+      </div>
 
-        <div class="row">
-          <div class="col-md-12 mb-5">
-            <form class="p-5 bg-white">
-              <div class="row form-group">
-                <div class="col-md-6 mb-3 mb-md-0">
-                  <label class="text-black" for="from">From</label>
-                  <select
-                    class="form-select form-control"
-                    aria-label="Default select example"
-                    required
-                  >
-                    <option selected disabled>Choose The Account</option>
-                    <option value="1">
-                      Account 1 : <span>654873673469746397</span>
-                    </option>
-                    <option value="2">
-                      Account 2 : <span>654873673469746397</span>
-                    </option>
-                    <option value="3">
-                      Account 3 : <span>654873673469746397</span>
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-6 mb-md-0">
-                  <label class="text-black" for="to">To</label>
-                  <input
-                    type="text"
-                    id="to"
-                    class="form-control"
-                    placeholder="Account number..."
-                  />
-                </div>
-              </div>
-              <div class="row form-group">
-                <div class="col-md-6">
-                  <label class="text-black" for="Amount">Amount</label>
-                  <input
-                    type="text"
-                    id="Amount"
-                    class="form-control"
-                    placeholder="Transaction Amount..."
-                  />
-                </div>
-              </div>
-
-              <div class="row form-group">
-                <div class="col-md-12">
-                  <input
-                    type="submit"
-                    value="Confirm Transaction"
-                    class="btn btn-primary btn-md text-white"
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
+      <!-- Transactions Table -->
+      <div class="table-responsive">
+        <table
+          id="userTransactionDetails"
+          class="table table-hover table-bordered text-center"
+        >
+          <thead class="thead-light">
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="transactionsTable">
+            <tr>
+              <td>2024-10-25</td>
+              <td>Amazon Purchase</td>
+              <td>Payment</td>
+              <td>$50.00</td>
+              <td>Shopping</td>
+              <td><span class="badge badge-success">Successful</span></td>
+            </tr>
+            <tr>
+              <td>2024-10-24</td>
+              <td>Salary Deposit</td>
+              <td>Deposit</td>
+              <td>$3,000.00</td>
+              <td>Income</td>
+              <td><span class="badge badge-success">Successful</span></td>
+            </tr>
+            <tr>
+              <td>2024-10-23</td>
+              <td>Phone Bill Payment</td>
+              <td>Payment</td>
+              <td>$20.00</td>
+              <td>Utilities</td>
+              <td><span class="badge badge-warning">Pending</span></td>
+            </tr>
+            <tr>
+              <td>2024-10-22</td>
+              <td>Gym Membership</td>
+              <td>Subscription</td>
+              <td>$30.00</td>
+              <td>Fitness</td>
+              <td><span class="badge badge-danger">Failed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Export PDF/CSV -->
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <button class="btn btn-outline-success" onclick="exportToCSV()">
+            Export to CSV
+          </button>
+          <button class="btn btn-outline-danger" onclick="exportToPDF()">
+            Export to PDF
+          </button>
         </div>
       </div>
     </section>
@@ -294,110 +360,6 @@
         </div>
       </div>
     </footer>
-
-    <!-- PopUp Model -->
-
-    <!-- Button trigger modal
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">
-      Launch demo modal
-    </button> -->
-
-    <!-- Modal -->
-    <div
-      class="modal fade"
-      id="exampleModalScrollable"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalScrollableTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="col-12 text-center">
-              <h2 class="section-title mb-4">OTP Verification</h2>
-              <p class="h5 w-75 mx-auto mb-3">
-                We wil send you one-time password to your mobile number.
-              </p>
-            </div>
-
-            <div class="row OTP_form">
-              <div class="col-md-12">
-                <form class="p-5">
-                  <!-- OTP Inputs -->
-                  <div class="otp row form-group">
-                    <input
-                      type="text"
-                      class="input"
-                      maxlength="1"
-                      focus
-                      required
-                    />
-                    <input
-                      type="text"
-                      class="input"
-                      maxlength="1"
-                      disabled
-                      required
-                    />
-                    <input
-                      type="text"
-                      class="input"
-                      maxlength="1"
-                      disabled
-                      required
-                    />
-                    <input
-                      type="text"
-                      class="input"
-                      maxlength="1"
-                      disabled
-                      required
-                    />
-                    <input
-                      type="text"
-                      class="input"
-                      maxlength="1"
-                      disabled
-                      required
-                    />
-                    <input
-                      type="text"
-                      class="input"
-                      maxlength="1"
-                      disabled
-                      required
-                    />
-                  </div>
-
-                  <div class="row form-group">
-                    <div class="col-md-12">
-                      <input
-                        type="submit"
-                        value="Confirm Transaction"
-                        class="btn btn-primary btn-md text-white mb-4"
-                      />
-                      <p>If didn't receive a code <a href="#">Resend</a></p>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- .site-wrap -->
 
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -413,5 +375,6 @@
     <script src="js/isotope.pkgd.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </body>
 </html>
