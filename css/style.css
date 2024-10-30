@@ -2865,6 +2865,64 @@ figure figcaption {
   color: #fff;
 }
 
+/* fundTransfer Style */
+
+.fundTransfer_amount{
+  display: grid;
+  grid-template-columns: 2fr 0.5fr;
+  position: relative;
+}
+
+
+select.form-control:focus{
+  border-radius: 0 !important;
+  border: 1px solid #ced4da ;
+  box-shadow: inset 1px 1px 5px #ccc !important;
+}
+select.form-control::-webkit-scrollbar {
+  width: 3px;
+}
+select.form-control::-webkit-scrollbar-thumb {
+  background: var(--first-color);
+}
+
+/* Model PopUp Style */
+/* ============ OTP verification ============ */
+.OTP_form form{
+  display: grid;
+  text-align: center;
+  align-items: center;
+  border-radius: 16px;
+  align-content: space-evenly;
+}
+.otp{
+  display: flex;
+  background: initial;
+  gap: 1rem;
+  padding: 1rem;
+  justify-content: center;
+}
+.otp input{
+  outline: none;
+  max-width: 40px;
+  font-size: 25px;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 5px;
+  border: 2px solid #aaa;
+  transition: all 0.1s;
+}
+.otp input:focus{
+  border: 2px solid var(--first-color);
+  box-shadow: 0 0 5px 5px #fd7e1499;
+}
+.otp span{
+  gap: 3px;
+  color: var(--first-color);
+  font-size: 14px;
+  font-weight: 500;
+}
+
 /*========================login=========================== */
 
 .login_container{
@@ -2904,7 +2962,8 @@ figure figcaption {
 
 /* Bordered form */  
 
-h2 {
+
+.flex-container h2 {
     font-family: OpenSans-Light;
     color: white;
     font-size: 40px;
@@ -2914,7 +2973,8 @@ h2 {
 }
     
 /* Bordered form */
-form {
+
+.flex-container form {
     
     padding: 20px; /* Add padding for better spacing */
 }
