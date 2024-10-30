@@ -2864,3 +2864,105 @@ figure figcaption {
   background-color: #fd7e14;
   color: #fff;
 }
+
+/*========================login=========================== */
+
+.login_container{
+  margin-top: 8%;
+   z-index: 1;
+}
+
+
+  /* General Styles */
+  
+
+.flex-container-background {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    overflow: auto;
+    width: auto;
+}
+
+.flex-container {
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flex-item-1 {
+    margin: auto;
+    margin-top: 50px;
+    background: rgba(0, 0, 0, .5);
+    width: 500px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+}
+
+/* Bordered form */  
+
+h2 {
+    font-family: OpenSans-Light;
+    color: white;
+    font-size: 40px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+    
+/* Bordered form */
+form {
+    
+    padding: 20px; /* Add padding for better spacing */
+}
+
+/* Hide the default checkbox */
+.custom-checkbox {
+    display: none; /* Hides the checkbox */
+}
+
+/* Custom checkbox styling */
+.custom-checkbox + label {
+    position: relative;
+    padding-left: 30px; /* Space for the custom checkbox */
+    cursor: pointer;
+    font-size: 18px; /* Font size for label */
+    color: white; /* Change the color as needed */
+}
+
+/* Custom checkbox square */
+.custom-checkbox + label:before {
+    content: '';
+    position: absolute;
+    left: 0; /* Position it to the left of the label */
+    top: 50%;
+    transform: translateY(-50%); /* Center vertically */
+    width: 20px; /* Width of the custom checkbox */
+    height: 20px; /* Height of the custom checkbox */
+    border: 2px solid #f1f1f1; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    background-color: transparent; /* Background color */
+    transition: background-color 0.3s, border-color 0.3s; /* Transition effects */
+}
+
+/* Checkmark */
+.custom-checkbox:checked + label:before {
+    background-color: #007bff; /* Background color when checked */
+    border-color: #007bff; /* Border color when checked */
+}
+
+/* Checkmark inside the box */
+.custom-checkbox:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 7px; /* Adjust for position */
+    top: 11px; /* Adjust for position */
+    width: 6px; /* Checkmark width */
+    height: 12px; /* Checkmark height */
+    border: solid white; /* Checkmark color */
+    border-width: 0 2px 2px 0; /* Checkmark styling */
+    transform: rotate(45deg); /* Rotate for checkmark */
+}
