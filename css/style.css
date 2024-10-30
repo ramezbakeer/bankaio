@@ -3060,3 +3060,90 @@ select.form-control::-webkit-scrollbar-thumb {
 }
 
 /*End of transaction history */
+
+/* Start Profile Page */
+
+/* Container */
+.Profile_container {
+  width: 100%;
+  row-gap: 20px;
+}
+
+/* Header */
+.Profile_container .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+.Profile_container .header h1 {
+  color: #ff7f3f;
+  font-size: 2rem; /* Larger font size for title */
+}
+
+.Profile_container .logout-button {
+  background: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.Profile_container .logout-button:hover {
+  background: #e63939;
+}
+
+/* Card Styles */
+.Profile_container .card {
+  background: #fff;
+  padding: 30px; /* More padding for larger card size */
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  display: grid;
+  gap: 15px;
+  border-left: 6px solid var(--first-color); /* Thicker orange border accent */
+}
+
+.Profile_container .card h2 {
+  font-size: 1.5rem; /* Larger font for headings */
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.Profile_container .card p {
+  font-size: 1.1rem; /* Slightly larger font for readability */
+  color: #666;
+}
+
+.Profile_container .card p strong {
+  color: var(--first-color);
+}
+
+/* Payment Button */
+.Profile_container .pay-button,
+.profile-logout-button {
+  background-color: var(--first-color);
+  outline: none;
+  color: #fff;
+  border: none;
+  padding: 15px; /* Increased padding for prominent button */
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  text-align: center;
+  max-width: 200px;
+  align-self: flex-start;
+}
+
+.Profile_container .pay-button:hover,
+.profile-logout-button {
+  background-color: #f06d34;
+}
+
