@@ -116,141 +116,172 @@
         </div>
       </div>
     </header>
-    <div class="container mt-5 mt-md-0">
-      <div class="row mb-5">
-        <div class="col-12 text-center transaction-head">
-          <h2 class="section-title mb-4">Transaction History</h2>
-          <p class="h5 w-75 mx-auto mb-4">All About Your Transaction</p>
-        </div>
-      </div>
-    </div>
     <section
-      class="container py-5 bg-light"
+      class="site-section bg-light"
       id="TransactionHistory-section"
       data-aos="fade"
     >
-      <!-- Filter Dropdown -->
-      <div class="d-flex justify-content-end mb-3">
-        <div class="dropdown">
-          <button
-            class="btn btn-outline-primary dropdown-toggle"
-            type="button"
-            id="filterDropdown"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            <i class="fas fa-filter mr-2"></i>
-            <span>Filter</span>
-          </button>
-
-          <div
-            class="dropdown-menu dropdown-menu-right"
-            aria-labelledby="filterDropdown"
-          >
-            <a class="dropdown-item" href="#" onclick="filterAll()"
-              >All Transactions</a
-            >
-            <a
-              class="dropdown-item"
-              href="#"
-              onclick="filterStatus('Successful')"
-              >Successful</a
-            >
-            <a class="dropdown-item" href="#" onclick="filterStatus('Pending')"
-              >Pending</a
-            >
-            <a class="dropdown-item" href="#" onclick="filterStatus('Failed')"
-              >Failed</a
-            >
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#" onclick="filterByAmount(0, 100)"
-              >Amount: 0 - 100</a
-            >
-            <a class="dropdown-item" href="#" onclick="filterByAmount(101, 500)"
-              >Amount: 101 - 500</a
-            >
-            <a
-              class="dropdown-item"
-              href="#"
-              onclick="filterByAmount(501, 1000)"
-              >Amount: 501 - 1000</a
-            >
-            <a class="dropdown-item" href="#" onclick="filterByAmount(1001)"
-              >Amount: > 1000</a
-            >
-            <div class="dropdown-divider"></div>
-            <input
-              type="date"
-              class="dropdown-item"
-              onchange="filterByDate(this.value)"
-              placeholder="Filter by Date"
-            />
+      <div class="container mt-5 mt-md-0">
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h2 class="section-title mb-4">Transaction History</h2>
+            <p class="h5 w-75 mx-auto mb-4">All About Your Transaction</p>
           </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col-md-12 mb-5">
+            <div class="p-5 bg-white">
+              <!-- Filter Dropdown -->
+              <div class="d-flex justify-content-end mb-3">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-outline-primary dropdown-toggle"
+                    type="button"
+                    id="filterDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <i class="fas fa-filter mr-2"></i>
+                    <span>Filter</span>
+                  </button>
 
-      <!-- Transactions Table -->
-      <div class="table-responsive">
-        <table
-          id="userTransactionDetails"
-          class="table table-hover table-bordered text-center"
-        >
-          <thead class="thead-light">
-            <tr>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Category</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="transactionsTable">
-            <tr>
-              <td>2024-10-25</td>
-              <td>Amazon Purchase</td>
-              <td>Payment</td>
-              <td>$50.00</td>
-              <td>Shopping</td>
-              <td><span class="badge badge-success">Successful</span></td>
-            </tr>
-            <tr>
-              <td>2024-10-24</td>
-              <td>Salary Deposit</td>
-              <td>Deposit</td>
-              <td>$3,000.00</td>
-              <td>Income</td>
-              <td><span class="badge badge-success">Successful</span></td>
-            </tr>
-            <tr>
-              <td>2024-10-23</td>
-              <td>Phone Bill Payment</td>
-              <td>Payment</td>
-              <td>$20.00</td>
-              <td>Utilities</td>
-              <td><span class="badge badge-warning">Pending</span></td>
-            </tr>
-            <tr>
-              <td>2024-10-22</td>
-              <td>Gym Membership</td>
-              <td>Subscription</td>
-              <td>$30.00</td>
-              <td>Fitness</td>
-              <td><span class="badge badge-danger">Failed</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- Export PDF/CSV -->
-      <div class="d-flex justify-content-between mb-3">
-        <div>
-          <button class="btn btn-outline-success" onclick="exportToCSV()">
-            Export to CSV
-          </button>
-          <button class="btn btn-outline-danger" onclick="exportToPDF()">
-            Export to PDF
-          </button>
+                  <div
+                    class="dropdown-menu dropdown-menu-right"
+                    aria-labelledby="filterDropdown"
+                  >
+                    <a class="dropdown-item" href="#" onclick="filterAll()"
+                      >All Transactions</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterStatus('Successful')"
+                      >Successful</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterStatus('Pending')"
+                      >Pending</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterStatus('Failed')"
+                      >Failed</a
+                    >
+                    <div class="dropdown-divider"></div>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterByAmount(0, 100)"
+                      >Amount: 0 - 100</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterByAmount(101, 500)"
+                      >Amount: 101 - 500</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterByAmount(501, 1000)"
+                      >Amount: 501 - 1000</a
+                    >
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      onclick="filterByAmount(1001)"
+                      >Amount: > 1000</a
+                    >
+                    <div class="dropdown-divider"></div>
+                    <input
+                      type="date"
+                      class="dropdown-item"
+                      onchange="filterByDate(this.value)"
+                      placeholder="Filter by Date"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Transactions Table -->
+              <div class="table-responsive">
+                <table
+                  id="userTransactionDetails"
+                  class="table table-hover table-bordered text-center"
+                >
+                  <thead class="thead-light">
+                    <tr>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Type</th>
+                      <th>Amount</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="transactionsTable">
+                    <tr>
+                      <td>2024-10-25</td>
+                      <td>Amazon Purchase</td>
+                      <td>Payment</td>
+                      <td>$50.00</td>
+                      <td>Shopping</td>
+                      <td>
+                        <span class="badge badge-success">Successful</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2024-10-24</td>
+                      <td>Salary Deposit</td>
+                      <td>Deposit</td>
+                      <td>$3,000.00</td>
+                      <td>Income</td>
+                      <td>
+                        <span class="badge badge-success">Successful</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>2024-10-23</td>
+                      <td>Phone Bill Payment</td>
+                      <td>Payment</td>
+                      <td>$20.00</td>
+                      <td>Utilities</td>
+                      <td><span class="badge badge-warning">Pending</span></td>
+                    </tr>
+                    <tr>
+                      <td>2024-10-22</td>
+                      <td>Gym Membership</td>
+                      <td>Subscription</td>
+                      <td>$30.00</td>
+                      <td>Fitness</td>
+                      <td><span class="badge badge-danger">Failed</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Export PDF/CSV -->
+              <div class="d-flex justify-content-between mb-3">
+                <div>
+                  <button
+                    class="btn btn-outline-success"
+                    onclick="exportToCSV()"
+                  >
+                    Export to CSV
+                  </button>
+                  <button
+                    class="btn btn-outline-danger"
+                    onclick="exportToPDF()"
+                  >
+                    Export to PDF
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
