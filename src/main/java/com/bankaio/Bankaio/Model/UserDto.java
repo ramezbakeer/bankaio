@@ -1,9 +1,24 @@
 package com.bankaio.Bankaio.Model;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public record UserDto(Long userId , String name, String email, Long phoneNumber,
-                      String address, String role,
-                      String password, Date createdAt, Date lastLogin) {
+import java.util.Date;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDto {
+    private Long userId;
+    private String name;
+    private String email;
+    private Long phoneNumber;
+    private String address;
+    private String role;// "Customer" or "Admin"
+    private String password;
+    private Date createdAt;
+    private Date lastLogin;
 }
 
