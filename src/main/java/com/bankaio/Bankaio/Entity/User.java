@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +27,9 @@ public class User{
         private String address;
         private String role;// "Customer" or "Admin"
         private String password;
-        private Date createdAt;
+        @CreationTimestamp
+        @Column(updatable = false)
+        private LocalDateTime createdAt;
         private Date lastLogin;
         @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         private List<Account> accountList;

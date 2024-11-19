@@ -1,5 +1,9 @@
 package com.bankaio.Bankaio.Model;
 
+import com.bankaio.Bankaio.Entity.Account;
+import com.bankaio.Bankaio.Entity.Bill;
+import com.bankaio.Bankaio.Entity.User;
+import com.bankaio.Bankaio.Entity.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,10 +17,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class TransactionDTO {
     private Long transId;
-
     private Double amount;
-
-    private String transType;
+    private TransactionType transType;
     private String transStatus;
-    private Date date;
+    private AccountDto accountDto;
+    private UserDto userDto;
+    private BillDto billDto;
+    private Long referenceId;
 }

@@ -1,5 +1,6 @@
 package com.bankaio.Bankaio.Entity;
 
+import com.bankaio.Bankaio.Entity.enums.BillStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,8 @@ public class Bill {
     private Long billId;
     private Double amount;
     private Date dueDate;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BillStatus status;
     private String billDescription;
     @ManyToOne
     @JoinColumn(name = "userId")

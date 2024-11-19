@@ -1,13 +1,13 @@
 package com.bankaio.Bankaio.Service;
 
+import com.bankaio.Bankaio.Entity.enums.TransactionType;
 import com.bankaio.Bankaio.Model.TransactionDTO;
 
 import java.util.List;
 
 public interface TransactionServiceInt {
-    public TransactionDTO createTransaction(String accountId, Double amount, String transType);
-    public Boolean processTransaction(String transId);
-    public String getTransactionStatus(String transId);
-    public List<TransactionDTO> getTransactionHistory(String accountId);
+    public TransactionDTO createTransaction(Long accountId, Double amount, TransactionType transType, Long referenceId);
+    public String getTransactionStatus(Long transId);
+    public List<TransactionDTO> getTransactionHistory(Long accountId);
 
 }

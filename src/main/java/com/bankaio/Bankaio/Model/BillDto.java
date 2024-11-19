@@ -1,5 +1,8 @@
 package com.bankaio.Bankaio.Model;
 
+import com.bankaio.Bankaio.Entity.Transaction;
+import com.bankaio.Bankaio.Entity.User;
+import com.bankaio.Bankaio.Entity.enums.BillStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +17,8 @@ public class BillDto {
     private Long billId;
     private Double amount;
     private Date dueDate;
-    private String status;
+    private BillStatus status;
     private String billDescription;
+    private UserDto userDto;
+    private TransactionDTO transactionDTO;
 }

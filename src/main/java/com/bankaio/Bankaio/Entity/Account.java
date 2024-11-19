@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +23,9 @@ public class Account
      private Double balance;
      private String Type;
      private String currency;
-     private Date createdAt;
+     @CreationTimestamp
+     @Column(updatable = false)
+     private LocalDateTime createdAt;
      private String Status;
      @ManyToOne
      @JoinColumn(name="userId",nullable = false)

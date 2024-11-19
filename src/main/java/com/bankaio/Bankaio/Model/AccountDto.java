@@ -14,6 +14,5 @@ public class AccountDto {
     private Double balance;
     private String Type;
     private String currency;
-    private Date createdAt;
     private String Status;
 }
