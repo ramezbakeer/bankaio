@@ -1,11 +1,12 @@
 package com.bankaio.Bankaio.Model;
 
+import com.bankaio.Bankaio.Entity.enums.NotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,5 +14,7 @@ import java.util.Date;
 public class NotificationDto {
     private Long notificationId;
     private String message;
-    private Date date;
+    private NotificationStatus status;
+    private LocalDateTime date;
+    private UserDto userDto;
 }

@@ -59,14 +59,12 @@ public class AccountService implements AccountServiceInt{
     @Override
     public void transferFunds(Long fromAccountId, Long toAccountId, Double amount) {
         Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("Account not found"));
-        Account toAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("The destination Account not found"));
+        accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("The destination Account not found"));
         if(fromAccount.getBalance()<amount){
             throw new RuntimeException("NO ENOUGH MONEY");
         }else{
-            fromAccount.setBalance(fromAccount.getBalance() - amount);
-            toAccount.setBalance(toAccount.getBalance() + amount);
-            accountRepository.save(fromAccount);
-            accountRepository.save(toAccount);
+            withdraw(fromAccountId,amount);
+            deposit(toAccountId,amount);
         }
 
     }

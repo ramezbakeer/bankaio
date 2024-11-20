@@ -1,11 +1,11 @@
 package com.bankaio.Bankaio.Service;
 
-import com.bankaio.Bankaio.Entity.Loan;
 import com.bankaio.Bankaio.Model.LoanDto;
-import com.bankaio.Bankaio.Model.TransactionDTO;
+import com.bankaio.Bankaio.Model.UserDto;
 
 public interface LoanServiceInt {
-    public LoanDto applyForLoan(Long userId, Double amount, Double interestRate, int tenureMonths);
+    public LoanDto createLoan(UserDto userDto, Double amount, int tenureMonths);
+    public LoanDto processLoan(Long loanId, Double interestRate);
     public LoanDto viewLoanDetails(Long loanId);
-    public TransactionDTO makeLoanPayment(Long loanId,Double paymentAmount);
+    public void updateLoanStatusAndInstallments(LoanDto loanDto, Double paymentAmount);
 }

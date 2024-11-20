@@ -2,11 +2,8 @@ package com.bankaio.Bankaio.Service;
 import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.BillStatus;
 import com.bankaio.Bankaio.Entity.enums.TransactionType;
-import com.bankaio.Bankaio.Model.AccountDto;
-import com.bankaio.Bankaio.Model.BillDto;
+import com.bankaio.Bankaio.Model.*;
 import org.modelmapper.ModelMapper;
-import com.bankaio.Bankaio.Model.TransactionDTO;
-import com.bankaio.Bankaio.Model.UserDto;
 import com.bankaio.Bankaio.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +14,15 @@ public class UserService implements UserServiceInt {
     private final TransactionService transactionService;
     private final BillService billService;
     private final AccountService accountService;
+    private final LoanService loanService;
 
-    private UserService(UserRepository userRepository,AccountService accountService,TransactionService transactionService,BillService billService, ModelMapper modelMapper){
+    private UserService(UserRepository userRepository,LoanService loanService,AccountService accountService,TransactionService transactionService,BillService billService, ModelMapper modelMapper){
         this.userRepository=userRepository;
         this.modelMapper = modelMapper;
         this.transactionService=transactionService;
         this.billService=billService;
         this.accountService=accountService;
+        this.loanService=loanService;
     }
 
     @Override
@@ -76,5 +75,24 @@ public class UserService implements UserServiceInt {
         billService.updateBillStatus(billId,BillStatus.PAID);
 
         return transactionDTO;
+    }
+
+    @Override
+    public TransactionDTO makeLoanPayment(Long loanId,Long accountId, Double paymentAmount) {
+        LoanDto loanDto = loanService.viewLoanDetails(loanId);
+        TransactionDTO transactionDTO =makeTransaction(accountId,paymentAmount,TransactionType.WITHDRAWAL);
+        loanService.updateLoanStatusAndInstallments(loanDto,paymentAmount);
+        return transactionDTO;
+    }
+
+    @Override
+    public void requestLoan(Long userId, Double amount, int tenureMonths) {
+        UserDto userDto = viewProfile(userId);
+        loanService.createLoan(userDto,amount,tenureMonths);
+    }
+
+    @Override
+    public void processLoan(Long loanId, Double interestRate) {
+            loanService.processLoan(loanId,interestRate);
     }
 }

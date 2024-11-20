@@ -47,7 +47,7 @@ public class TransactionService implements TransactionServiceInt {
     public String getTransactionStatus(Long transId) {
         return transactionRepo.findById(transId).orElseThrow(RuntimeException::new).getTransactionStatus();
     }
-
+    @Override
     public List<TransactionDTO> getTransactionHistory(Long accountId){
         List<Transaction> transactionEntities = transactionRepo.findAll();
         return transactionEntities

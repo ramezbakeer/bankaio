@@ -1,5 +1,6 @@
 package com.bankaio.Bankaio.Model;
 
+import com.bankaio.Bankaio.Entity.enums.LoanStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,8 @@ public class LoanDto {
     private Long loanId;
     private Double principleAmount;
     private Double interestRate;
-    private String loanStatus;
+    private LoanStatus loanStatus;
+    private int tenureMonths;
     private List<Double> instalments;
     private Date dueDate;
 }

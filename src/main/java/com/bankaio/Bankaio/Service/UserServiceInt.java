@@ -12,4 +12,7 @@ public interface UserServiceInt {
     public TransactionDTO makeTransaction(Long accountId, Double amount , TransactionType transactionType);
     public TransactionDTO makeTransaction(Long fromAccountId, Long toAccountId, Double amount);
     public TransactionDTO payBill(Long billId,Long accountId, Double amount );
+    public TransactionDTO makeLoanPayment(Long loanId,Long accountId,Double paymentAmount);
+    public void requestLoan(Long userId, Double amount, int tenureMonths);
+    public void processLoan(Long loanId, Double interestRate);
 }
