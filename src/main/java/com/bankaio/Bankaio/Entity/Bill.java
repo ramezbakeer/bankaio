@@ -26,7 +26,7 @@ public class Bill {
     private BillStatus status;
     private String billDescription;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
     @OneToOne(mappedBy = "bill", cascade = CascadeType.ALL)
     private Transaction transaction;

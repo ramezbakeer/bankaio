@@ -1,5 +1,6 @@
 package com.bankaio.Bankaio.Entity;
 
+import com.bankaio.Bankaio.Entity.enums.TransactionStatus;
 import com.bankaio.Bankaio.Entity.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,22 +22,22 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
-
     private Double amount;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    private String transactionStatus;
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus transactionStatus;
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime created_At;
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="account_id" ,nullable = false)
     private Account account;
     @ManyToOne
-    @JoinColumn(name="userId")
+    @JoinColumn(name="user_id",nullable = false)
     private User user;
     @OneToOne
-    @JoinColumn(name = "billId")
+    @JoinColumn(name = "bill_id")
     private Bill bill;
     private Long referenceId;
 }

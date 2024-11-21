@@ -1,11 +1,12 @@
 package com.bankaio.Bankaio.Service;
 
 import com.bankaio.Bankaio.Model.NotificationDto;
+import com.bankaio.Bankaio.Model.UserDto;
 
 import java.util.List;
 
 public interface NotificationServiceInt {
-    public NotificationDto sendNotification(NotificationDto notificationDto);
-    public List<NotificationDto> viewNotifications(Long userId);
-    public void markAsRead(Long notificationId);
+    void sendNotification(UserDto userDto, String message);
+    List<NotificationDto> viewNotifications(Long userId);
+    void markAsRead(Long notificationId);
 }

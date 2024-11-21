@@ -6,8 +6,7 @@ import com.bankaio.Bankaio.Model.TransactionDTO;
 import java.util.List;
 
 public interface TransactionServiceInt {
-    public TransactionDTO createTransaction(Long accountId, Double amount, TransactionType transType, Long referenceId);
-    public String getTransactionStatus(Long transId);
-    public List<TransactionDTO> getTransactionHistory(Long accountId);
+    TransactionDTO createTransaction(Long userId,Long accountId, Double amount, TransactionType transType, Long referenceId);
+    List<TransactionDTO> getTransactionHistory(Long userId,Long accountId);
 
 }

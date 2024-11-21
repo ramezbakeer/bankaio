@@ -1,15 +1,16 @@
 package com.bankaio.Bankaio.Service;
 
 import com.bankaio.Bankaio.Model.AccountDto;
+import com.bankaio.Bankaio.Model.UserDto;
 
 import java.util.List;
 
 public interface AccountServiceInt {
-    public AccountDto createAccount(AccountDto accountDto);
-    public AccountDto getAccountDetails(Long id);
-    public List<AccountDto> getAllAccounts();
-    public void closeAccount(Long id);
-    public void deposit(Long id, Double amount);
-    public void withdraw(Long id, Double amount);
-    public void transferFunds(Long fromAccountId, Long toAccountId, Double amount);
+     void createAccount(UserDto userDto, AccountDto accountDto);
+     AccountDto getAccountDetails(Long userId,Long accountId);
+     List<AccountDto> getAllAccounts(Long userId);
+     void closeAccount(Long userId,Long accountId);
+     void deposit(Long accountId, Double amount);
+     void withdraw(Long accountId, Double amount);
+     void transferFunds(Long userId,Long fromAccountId, Long toAccountId, Double amount);
 }

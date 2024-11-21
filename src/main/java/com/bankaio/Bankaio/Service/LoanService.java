@@ -4,13 +4,13 @@ import com.bankaio.Bankaio.Entity.Loan;
 import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.LoanStatus;
 import com.bankaio.Bankaio.Model.LoanDto;
-import com.bankaio.Bankaio.Model.TransactionDTO;
 import com.bankaio.Bankaio.Model.UserDto;
 import com.bankaio.Bankaio.Repository.LoanRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+@Service
 public class LoanService implements LoanServiceInt{
     private final LoanRepository loanRepository;
     private final ModelMapper modelMapper;
@@ -19,18 +19,18 @@ public class LoanService implements LoanServiceInt{
         this.modelMapper=modelMapper;
     }
     @Override
-    public LoanDto createLoan(UserDto userDto, Double amount, int tenureMonths) {
+    public void createLoan(UserDto userDto, Double amount, int tenureMonths) {
         Loan loan = new Loan();
         loan.setUser(modelMapper.map(userDto, User.class));
         loan.setPrincipleAmount(amount);
         loan.setTenureMonths(tenureMonths);
         loan.setLoanStatus(LoanStatus.PENDING);
-        return modelMapper.map(loanRepository.save(loan),LoanDto.class);
+        loanRepository.save(loan);
     }
 
     @Override
-    public LoanDto processLoan(Long loanId, Double interestRate) {
-        LoanDto loanDto =viewLoanDetails(loanId);
+    public void processLoan(Long loanId, Double interestRate) {
+        LoanDto loanDto =viewLoanDetailsByLoanID(loanId);
         if (!loanDto.getLoanStatus().equals(LoanStatus.PENDING)) {
             throw new RuntimeException("Loan is already processed or invalid");
         }
@@ -41,13 +41,16 @@ public class LoanService implements LoanServiceInt{
         loanDto.setLoanStatus(LoanStatus.APPROVED);
         Loan loan = modelMapper.map(loanDto,Loan.class);
         loanRepository.save(loan);
-
-        return modelMapper.map(loan,LoanDto.class);
     }
 
     @Override
-    public LoanDto viewLoanDetails(Long loanId) {
-        return modelMapper.map(loanRepository.findById(loanId).orElseThrow(()->new RuntimeException("Loan Not Found")),LoanDto.class);
+    public LoanDto viewLoanDetails(Long userId, Long loanId) {
+        return modelMapper.map(loanRepository.findByUser_UserIdAndLoanId(userId,loanId).orElseThrow(()->new RuntimeException("Loan Not Found")),LoanDto.class);
+    }
+
+    @Override
+    public List<LoanDto> viewAllLoans(Long userId) {
+        return loanRepository.findAllByUser_UserId(userId).stream().map((loan)->modelMapper.map(loan,LoanDto.class)).toList();
     }
 
     @Override
@@ -72,6 +75,7 @@ public class LoanService implements LoanServiceInt{
         } else {
             loanDto.setLoanStatus(LoanStatus.ACTIVE);
         }
+        loanRepository.save(modelMapper.map(loanDto,Loan.class));
     }
 
     private List<Double> calculateInstallments(Double amount, Double interestRate, int tenureMonths) {
@@ -89,5 +93,8 @@ public class LoanService implements LoanServiceInt{
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1); // First due date is one month from now
         return calendar.getTime();
+    }
+    private LoanDto viewLoanDetailsByLoanID(Long loanId){
+        return modelMapper.map(loanRepository.findById(loanId).orElseThrow(()->new RuntimeException("Loan Not Found")),LoanDto.class);
     }
 }

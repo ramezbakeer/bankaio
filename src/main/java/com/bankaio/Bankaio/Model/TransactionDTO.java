@@ -3,6 +3,7 @@ package com.bankaio.Bankaio.Model;
 import com.bankaio.Bankaio.Entity.Account;
 import com.bankaio.Bankaio.Entity.Bill;
 import com.bankaio.Bankaio.Entity.User;
+import com.bankaio.Bankaio.Entity.enums.TransactionStatus;
 import com.bankaio.Bankaio.Entity.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class TransactionDTO {
     private Long transId;
     private Double amount;
     private TransactionType transType;
-    private String transStatus;
+    private TransactionStatus transStatus;
     private AccountDto accountDto;
     private UserDto userDto;
     private BillDto billDto;

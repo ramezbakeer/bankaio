@@ -1,7 +1,10 @@
 package com.bankaio.Bankaio.Service;
 
 import com.bankaio.Bankaio.Entity.Account;
+import com.bankaio.Bankaio.Entity.User;
+import com.bankaio.Bankaio.Entity.enums.AccountStatus;
 import com.bankaio.Bankaio.Model.AccountDto;
+import com.bankaio.Bankaio.Model.UserDto;
 import com.bankaio.Bankaio.Repository.AccountRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -16,38 +19,40 @@ public class AccountService implements AccountServiceInt{
         this.modelMapper=modelMapper;
     }
     @Override
-    public AccountDto createAccount(AccountDto accountDto) {
+    public void createAccount(UserDto userDto, AccountDto accountDto) {
         Account account = modelMapper.map(accountDto, Account.class);
-        return modelMapper.map(accountRepository.save(account),AccountDto.class);
+        account.setStatus(AccountStatus.ACTIVE);
+        account.setUser(modelMapper.map(userDto, User.class));
+        modelMapper.map(accountRepository.save(account), AccountDto.class);
     }
 
     @Override
-    public AccountDto getAccountDetails(Long id) {
-        return modelMapper.map(accountRepository.findById(id).orElseThrow(RuntimeException::new),AccountDto.class);
+    public AccountDto getAccountDetails(Long userId,Long accountId) {
+        return modelMapper.map(accountRepository.findByUser_UserIdAndAccountId(userId,accountId).orElseThrow(RuntimeException::new),AccountDto.class);
     }
 
     @Override
-    public List<AccountDto> getAllAccounts() {
-        return accountRepository.findAll().stream().map(account -> modelMapper.map(account,AccountDto.class)).toList();
+    public List<AccountDto> getAllAccounts(Long UserId) {
+        return accountRepository.findAllByUser_UserId(UserId).stream().map(account -> modelMapper.map(account,AccountDto.class)).toList();
     }
 
     @Override
-    public void closeAccount(Long id) {
-        AccountDto accountDto =modelMapper.map(accountRepository.findById(id).orElseThrow(RuntimeException::new),AccountDto.class);
-        accountDto.setStatus("BLOCKED");
+    public void closeAccount(Long userId,Long accountId) {
+        AccountDto accountDto =modelMapper.map(accountRepository.findByUser_UserIdAndAccountId(userId,accountId).orElseThrow(RuntimeException::new),AccountDto.class);
+        accountDto.setStatus(AccountStatus.CLOSED);
         accountRepository.save(modelMapper.map(accountDto,Account.class));
     }
 
     @Override
-    public void deposit(Long id, Double amount) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found"));
+    public void deposit(Long accountId, Double amount) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
         account.setBalance(account.getBalance() + amount);
         accountRepository.save(account);
     }
 
     @Override
-    public void withdraw(Long id, Double amount) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found"));
+    public void withdraw(Long accountId, Double amount) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
         if(account.getBalance()<amount){
             throw new RuntimeException("NO ENOUGH MONEY");
         }else{
@@ -57,9 +62,9 @@ public class AccountService implements AccountServiceInt{
     }
 
     @Override
-    public void transferFunds(Long fromAccountId, Long toAccountId, Double amount) {
-        Account fromAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("Account not found"));
-        accountRepository.findById(fromAccountId).orElseThrow(() -> new RuntimeException("The destination Account not found"));
+    public void transferFunds(Long userId,Long fromAccountId, Long toAccountId, Double amount) {
+        Account fromAccount = accountRepository.findByUser_UserIdAndAccountId(userId,fromAccountId).orElseThrow(() -> new RuntimeException("Account not found"));
+        accountRepository.findById(toAccountId).orElseThrow(() -> new RuntimeException("The destination Account not found"));
         if(fromAccount.getBalance()<amount){
             throw new RuntimeException("NO ENOUGH MONEY");
         }else{

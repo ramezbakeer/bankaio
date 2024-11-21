@@ -28,6 +28,6 @@ public class Loan {
     private int tenureMonths;
     private Date dueDate;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 }

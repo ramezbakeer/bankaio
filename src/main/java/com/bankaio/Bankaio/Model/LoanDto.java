@@ -1,5 +1,6 @@
 package com.bankaio.Bankaio.Model;
 
+import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.LoanStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,5 @@ public class LoanDto {
     private int tenureMonths;
     private List<Double> instalments;
     private Date dueDate;
+    private UserDto userDto;
 }

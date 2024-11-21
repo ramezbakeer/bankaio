@@ -29,6 +29,6 @@ public class Notification {
     @Column(updatable = false)
     private LocalDateTime date;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 }
