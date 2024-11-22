@@ -3,6 +3,7 @@ package com.bankaio.Bankaio.Service;
 import com.bankaio.Bankaio.Entity.Account;
 import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.AccountStatus;
+import com.bankaio.Bankaio.Model.AccountCreateDto;
 import com.bankaio.Bankaio.Model.AccountDto;
 import com.bankaio.Bankaio.Model.UserDto;
 import com.bankaio.Bankaio.Repository.AccountRepository;
@@ -14,21 +15,26 @@ import java.util.List;
 public class AccountService implements AccountServiceInt{
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
-    private AccountService(AccountRepository accountRepository,ModelMapper modelMapper){
+    public AccountService(AccountRepository accountRepository,ModelMapper modelMapper){
         this.accountRepository=accountRepository;
         this.modelMapper=modelMapper;
     }
     @Override
-    public void createAccount(UserDto userDto, AccountDto accountDto) {
+    public AccountDto createAccount(UserDto userDto, AccountCreateDto accountDto) {
         Account account = modelMapper.map(accountDto, Account.class);
         account.setStatus(AccountStatus.ACTIVE);
         account.setUser(modelMapper.map(userDto, User.class));
-        modelMapper.map(accountRepository.save(account), AccountDto.class);
+        return modelMapper.map(accountRepository.save(account), AccountDto.class);
     }
 
     @Override
     public AccountDto getAccountDetails(Long userId,Long accountId) {
         return modelMapper.map(accountRepository.findByUser_UserIdAndAccountId(userId,accountId).orElseThrow(RuntimeException::new),AccountDto.class);
+    }
+
+    @Override
+    public AccountDto getAccountDetailsById(Long accountId) {
+        return modelMapper.map(accountRepository.findById(accountId).orElseThrow(RuntimeException::new),AccountDto.class);
     }
 
     @Override

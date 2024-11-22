@@ -1,4 +1,5 @@
 package com.bankaio.Bankaio.Service;
+
 import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.BillStatus;
 import com.bankaio.Bankaio.Entity.enums.LoanStatus;
@@ -20,7 +21,7 @@ public class UserService implements UserServiceInt {
     private final LoanServiceInt loanService;
     private final NotificationServiceInt notificationService;
 
-    private UserService(UserRepository userRepository,NotificationServiceInt notificationService,LoanServiceInt loanService,AccountServiceInt accountService,TransactionServiceInt transactionService,BillServiceInt billService, ModelMapper modelMapper){
+    public UserService(UserRepository userRepository,NotificationServiceInt notificationService,LoanServiceInt loanService,AccountServiceInt accountService,TransactionServiceInt transactionService,BillServiceInt billService, ModelMapper modelMapper){
         this.userRepository=userRepository;
         this.modelMapper = modelMapper;
         this.transactionService=transactionService;
@@ -31,9 +32,10 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public void createUser(UserDto userDto) {
-        User user = modelMapper.map(userDto, User.class);
+    public UserDto createUser(UserRequestDto userRequestDto) {
+        User user = modelMapper.map(userRequestDto, User.class);
         userRepository.save(user);
+        return modelMapper.map(userRepository.save(user),UserDto.class);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public void updateProfile(Long userId, UserDto updatedDetails) {
+    public void updateProfile(Long userId, UserUpdateDto updatedDetails) {
         UserDto userDto = viewProfile(userId);
         if(updatedDetails.getPhoneNumber()!=null){
             userDto.setPhoneNumber(updatedDetails.getPhoneNumber());
@@ -63,35 +65,42 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public TransactionDTO makeTransaction(Long userId, Long accountId, Double amount, TransactionType transactionType) {
-        notificationService.sendNotification(viewProfile(userId),String.format("You Make a Transaction from Account Number %d",accountId));
-        return transactionService.createTransaction(userId,accountId,amount,transactionType,null);
-    }
-    @Override
-    public TransactionDTO transferFund(Long userId, Long fromAccountId, Long toAccountId, Double amount){
+    public TransactionDTO transferFund(Long userId, Long fromAccountId,TransferDto transferDto){
         notificationService
                 .sendNotification(
                         viewProfile(userId)
                         ,String
                                 .format(
                                         "You Just Transfer %f from Account number %d to Account Number %d"
-                                        ,amount
+                                        ,transferDto.getAmount()
                                         ,fromAccountId
-                                        ,toAccountId
+                                        ,transferDto.getReferenceId()
                                 )
                 );
-        return  transactionService.createTransaction(userId,fromAccountId,amount,TransactionType.TRANSFER,toAccountId);
+        notificationService
+                .sendNotification(
+                        accountService.getAccountDetailsById(transferDto.getReferenceId()).getUserDto()
+                        ,String
+                                .format(
+                                        "You Just Receive %f At Account number %d From Account Number %d"
+                                        ,transferDto.getAmount()
+                                        ,transferDto.getReferenceId()
+                                        ,fromAccountId
+                                )
+                );
+        return  makeTransaction(userId,fromAccountId,transferDto.getAmount(),TransactionType.TRANSFER,transferDto.getReferenceId());
     }
 
     @Override
-    public void addBill(Long userId,BillDto billDto) {
+    public BillDto addBill(Long userId,BillCreateDto billDto) {
         UserDto userDto =  viewProfile(userId);
-        billService.createBill(userDto,billDto);
+        BillDto createdBillDto = billService.createBill(userDto,billDto);
         notificationService.sendNotification(userDto,String.format("you add a new bill with description %s",billDto.getBillDescription()));
+        return createdBillDto;
     }
 
     @Override
-    public TransactionDTO payBill(Long userId, Long billId, Long accountId, Double amount) {
+    public TransactionDTO payBill(Long userId ,Long accountId,Long billId) {
         BillDto billDto = billService.viewBillDetails(userId,billId);
         AccountDto accountDto = accountService.getAccountDetails(userId,accountId);
         // Check if the bill is already paid
@@ -100,7 +109,7 @@ public class UserService implements UserServiceInt {
             throw new RuntimeException("Bill is already paid");
         }
         // Check for sufficient funds
-        if (accountDto.getBalance() < amount) {
+        if (accountDto.getBalance() < billDto.getAmount()) {
             // Update the bill status to FAILED if applicable
             billService.updateBillStatus(userId, billId, BillStatus.FAILED);
             notificationService.sendNotification(billDto.getUserDto(),"You try to pay a bill where no sufficient funds to pay the bill");
@@ -108,7 +117,7 @@ public class UserService implements UserServiceInt {
         }
 
         // Process the payment
-        TransactionDTO transactionDTO = makeTransaction(userId, accountId, amount, TransactionType.WITHDRAWAL);
+        TransactionDTO transactionDTO = makeTransaction(userId, accountId, billDto.getAmount(), TransactionType.WITHDRAWAL,billId);
         billService.updateBillStatus(userId,billId, BillStatus.PAID);
         notificationService
                 .sendNotification(
@@ -118,8 +127,8 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public TransactionDTO makeLoanPayment(Long userId, Long loanId, Long accountId, Double paymentAmount) {
-        LoanDto loanDto = loanService.viewLoanDetails(userId,loanId);
+    public TransactionDTO makeLoanPayment(Long userId, Long accountId,TransferDto transferDto) {
+        LoanDto loanDto = loanService.viewLoanDetails(userId,transferDto.getReferenceId());
         AccountDto accountDto =accountService.getAccountDetails(userId,accountId);
         // Check if the bill is already paid
         if (loanDto.getLoanStatus().equals(LoanStatus.PAID)) {
@@ -127,42 +136,43 @@ public class UserService implements UserServiceInt {
             throw new RuntimeException("Loan is already paid");
         }
         // Check for sufficient funds
-        if (accountDto.getBalance() < paymentAmount) {
+        if (accountDto.getBalance() < transferDto.getAmount()) {
             // Update the bill status to FAILED if applicable
-            notificationService.sendNotification(loanDto.getUserDto(),"You try to pay a loan where no sufficient funds to pay the bill");
+            notificationService.sendNotification(loanDto.getUserDto(),"You try to pay a loan where no sufficient funds to pay the loan");
             throw new RuntimeException("Insufficient funds to pay the Loan");
         }
-        TransactionDTO transactionDTO =makeTransaction(userId, accountId, paymentAmount, TransactionType.WITHDRAWAL);
-        loanService.updateLoanStatusAndInstallments(loanDto,paymentAmount);
+        TransactionDTO transactionDTO =makeTransaction(userId, accountId, transferDto.getAmount(), TransactionType.WITHDRAWAL,transferDto.getReferenceId());
+        loanService.updateLoanStatusAndInstallments(loanDto,transactionDTO.getAmount());
         notificationService
                 .sendNotification(loanDto.getUserDto(),"your loan payment done successfully");
         return transactionDTO;
     }
 
     @Override
-    public void requestLoan(Long userId, Double amount, int tenureMonths) {
+    public LoanDto requestLoan(Long userId, LoanRequestDto loanRequestDto) {
         UserDto userDto = viewProfile(userId);
-        loanService.createLoan(userDto,amount,tenureMonths);
+        LoanDto loanDto=loanService.createLoan(userDto,loanRequestDto);
         notificationService.sendNotification(
                 userDto
                 ,String
                         .format(
                                 "you just request a loan with %f amount and %d tenure Months"
-                                ,amount
-                                ,tenureMonths
+                                ,loanRequestDto.getPrincipleAmount()
+                                ,loanRequestDto.getTenureMonths()
                         )
     );
+        return loanDto;
     }
 
     @Override
-    public void processLoan(Long loanId, Double interestRate) {
-            loanService.processLoan(loanId,interestRate);
+    public void processLoan(Long userId,Long loanId, Double interestRate) {
+            loanService.processLoan(userId,loanId,interestRate);
     }
 
     @Override
-    public void createAccount(Long userId, AccountDto accountDto) {
+    public AccountDto createAccount(Long userId, AccountCreateDto accountDto) {
         UserDto userDto = viewProfile(userId);
-        accountService.createAccount(userDto,accountDto);
+        return accountService.createAccount(userDto,accountDto);
     }
 
     @Override
@@ -196,12 +206,32 @@ public class UserService implements UserServiceInt {
     }
 
     @Override
-    public void markAsReadNotification(Long notificationId) {
-        notificationService.markAsRead(notificationId);
+    public void markAsReadNotification(Long userId,Long notificationId) {
+        notificationService.markAsRead(userId,notificationId);
     }
 
     @Override
     public List<BillDto> viewAllBills(Long userId) {
         return billService.viewAllBills(userId);
+    }
+
+    @Override
+    public BillDto viewBillDetails(Long userId, Long billId) {
+        return billService.viewBillDetails(userId,billId);
+    }
+
+    @Override
+    public LoanDto viewLoanDetails(Long userId, Long loanId) {
+        return loanService.viewLoanDetails(userId,loanId);
+    }
+
+    @Override
+    public TransactionDTO viewTransactionDetails(Long userId, Long accountId, Long transactionId) {
+        return transactionService.viewTransactionDetails(userId,accountId,transactionId);
+    }
+
+    private TransactionDTO makeTransaction(Long userId, Long accountId, Double amount, TransactionType transactionType,Long toAccountId) {
+        notificationService.sendNotification(viewProfile(userId),String.format("You Make a Transaction from Account Number %d",accountId));
+        return transactionService.createTransaction(userId,accountId,amount,transactionType,toAccountId);
     }
 }

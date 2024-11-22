@@ -19,8 +19,7 @@ public class TransactionService implements TransactionServiceInt {
     private final ModelMapper modelMapper  =  new ModelMapper();
     private final AccountServiceInt accountService;
 
-    @Autowired
-    private TransactionService(TransactionRepo transactionRepo,AccountServiceInt accountService){
+    public TransactionService(TransactionRepo transactionRepo,AccountServiceInt accountService){
         this.transactionRepo = transactionRepo;
         this.accountService=accountService;
     }
@@ -31,8 +30,8 @@ public class TransactionService implements TransactionServiceInt {
         TransactionDTO transactionDTO = new TransactionDTO();
         transactionDTO.setAccountDto(accountService.getAccountDetails(userId,accountId));
         transactionDTO.setAmount(amount);
-        transactionDTO.setTransType(transType);
-        transactionDTO.setTransStatus(TransactionStatus.PENDING);
+        transactionDTO.setTransactionType(transType);
+        transactionDTO.setTransactionStatus(TransactionStatus.PENDING);
         transactionDTO.setReferenceId(referenceId);
       try{
           switch (transType){
@@ -41,9 +40,9 @@ public class TransactionService implements TransactionServiceInt {
               case WITHDRAWAL, BILL_PAYMENT,LOAN_PAYMENT -> accountService.withdraw(accountId,amount);
               default -> throw new IllegalArgumentException("Invalid transaction type");
           }
-          transactionDTO.setTransStatus(TransactionStatus.COMPLETED);
+          transactionDTO.setTransactionStatus(TransactionStatus.COMPLETED);
       }catch (RuntimeException e){
-          transactionDTO.setTransStatus(TransactionStatus.FAILED);
+          transactionDTO.setTransactionStatus(TransactionStatus.FAILED);
           transactionRepo.save(modelMapper.map(transactionDTO,Transaction.class));
           throw e;
       }
@@ -54,11 +53,17 @@ public class TransactionService implements TransactionServiceInt {
 
     @Override
     public List<TransactionDTO> getTransactionHistory(Long userId,Long accountId){
-        List<Transaction> transactionEntities = transactionRepo.findByUser_UserIdAndAccount_AccountId(userId,accountId);
+        List<Transaction> transactionEntities = transactionRepo.findAllByUser_UserIdAndAccount_AccountId(userId,accountId);
         return transactionEntities
                 .stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TransactionDTO viewTransactionDetails(Long userId, Long accountId, Long transactionId) {
+        Transaction transaction = transactionRepo.findByUser_UserIdAndAccount_AccountIdAndTransactionId(userId,accountId,transactionId).orElseThrow(()->new RuntimeException("NO SUCH TRANSACTION"));
+        return modelMapper.map(transaction,TransactionDTO.class);
     }
 
 

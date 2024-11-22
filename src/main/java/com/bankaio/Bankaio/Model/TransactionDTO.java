@@ -17,12 +17,11 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionDTO {
-    private Long transId;
+    private Long transactionId;
     private Double amount;
-    private TransactionType transType;
-    private TransactionStatus transStatus;
+    private TransactionType transactionType;
+    private TransactionStatus transactionStatus;
+    private Long referenceId;
     private AccountDto accountDto;
     private UserDto userDto;
-    private BillDto billDto;
-    private Long referenceId;
 }

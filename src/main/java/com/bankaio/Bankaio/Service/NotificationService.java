@@ -14,7 +14,7 @@ import java.util.List;
 public class NotificationService implements NotificationServiceInt {
     private final NotificationRepository notificationRepository;
     private final ModelMapper modelMapper;
-    private NotificationService(NotificationRepository notificationRepository,ModelMapper modelMapper){
+    public NotificationService(NotificationRepository notificationRepository,ModelMapper modelMapper){
         this.notificationRepository=notificationRepository;
         this.modelMapper=modelMapper;
     }
@@ -33,8 +33,8 @@ public class NotificationService implements NotificationServiceInt {
     }
 
     @Override
-    public void markAsRead(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).orElseThrow(()-> new RuntimeException("NO Notification Found"));
+    public void markAsRead(Long userId,Long notificationId) {
+        Notification notification = notificationRepository.findByUser_UserIdAndNotificationId(userId,notificationId).orElseThrow(()->new RuntimeException("No notification Found"));
         notification.setStatus(NotificationStatus.READ);
         notificationRepository.save(notification);
     }

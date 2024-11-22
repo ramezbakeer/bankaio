@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserDto {
     private Long userId;
-    private String name;
+    private String username;
     private String email;
     private Long phoneNumber;
     private String address;
@@ -27,10 +27,5 @@ public class UserDto {
     private String password;
     private LocalDateTime createdAt;
     private Date lastLogin;
-    private List<AccountDto> accountList;
-    private List<TransactionDTO> transactions;
-    private List<BillDto> bills;
-    private List<NotificationDto> notificationList;
-    private List<LoanDto> loanList;
 }
 

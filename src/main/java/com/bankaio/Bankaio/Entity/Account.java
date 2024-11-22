@@ -1,6 +1,7 @@
 package com.bankaio.Bankaio.Entity;
 
 import com.bankaio.Bankaio.Entity.enums.AccountStatus;
+import com.bankaio.Bankaio.Entity.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class Account
      @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long accountId;
      private Double balance;
-     private String Type;
+     @Enumerated(EnumType.STRING)
+     private AccountType Type;
      private String currency;
      @CreationTimestamp
      @Column(updatable = false)

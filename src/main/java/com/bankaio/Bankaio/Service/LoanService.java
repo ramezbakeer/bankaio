@@ -4,6 +4,7 @@ import com.bankaio.Bankaio.Entity.Loan;
 import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.LoanStatus;
 import com.bankaio.Bankaio.Model.LoanDto;
+import com.bankaio.Bankaio.Model.LoanRequestDto;
 import com.bankaio.Bankaio.Model.UserDto;
 import com.bankaio.Bankaio.Repository.LoanRepository;
 import org.modelmapper.ModelMapper;
@@ -14,23 +15,21 @@ import java.util.*;
 public class LoanService implements LoanServiceInt{
     private final LoanRepository loanRepository;
     private final ModelMapper modelMapper;
-    private LoanService(LoanRepository loanRepository,ModelMapper modelMapper){
+    public LoanService(LoanRepository loanRepository,ModelMapper modelMapper){
         this.loanRepository=loanRepository;
         this.modelMapper=modelMapper;
     }
     @Override
-    public void createLoan(UserDto userDto, Double amount, int tenureMonths) {
-        Loan loan = new Loan();
+    public LoanDto createLoan(UserDto userDto, LoanRequestDto loanRequestDto) {
+        Loan loan = modelMapper.map(loanRequestDto,Loan.class);
         loan.setUser(modelMapper.map(userDto, User.class));
-        loan.setPrincipleAmount(amount);
-        loan.setTenureMonths(tenureMonths);
         loan.setLoanStatus(LoanStatus.PENDING);
-        loanRepository.save(loan);
+        return modelMapper.map(loanRepository.save(loan),LoanDto.class);
     }
 
     @Override
-    public void processLoan(Long loanId, Double interestRate) {
-        LoanDto loanDto =viewLoanDetailsByLoanID(loanId);
+    public void processLoan(Long userId,Long loanId, Double interestRate) {
+        LoanDto loanDto =viewLoanDetails(userId,loanId);
         if (!loanDto.getLoanStatus().equals(LoanStatus.PENDING)) {
             throw new RuntimeException("Loan is already processed or invalid");
         }
@@ -93,8 +92,5 @@ public class LoanService implements LoanServiceInt{
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1); // First due date is one month from now
         return calendar.getTime();
-    }
-    private LoanDto viewLoanDetailsByLoanID(Long loanId){
-        return modelMapper.map(loanRepository.findById(loanId).orElseThrow(()->new RuntimeException("Loan Not Found")),LoanDto.class);
     }
 }

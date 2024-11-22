@@ -1,11 +1,14 @@
 package com.bankaio.Bankaio.Service;
 
 import com.bankaio.Bankaio.Entity.Bill;
+import com.bankaio.Bankaio.Entity.User;
 import com.bankaio.Bankaio.Entity.enums.BillStatus;
+import com.bankaio.Bankaio.Model.BillCreateDto;
 import com.bankaio.Bankaio.Model.BillDto;
 import com.bankaio.Bankaio.Model.UserDto;
 import com.bankaio.Bankaio.Repository.BillRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -16,20 +19,20 @@ public class BillService implements BillServiceInt{
     private final BillRepository billRepository;
     private final ModelMapper modelMapper;
 
-    private BillService(BillRepository billRepository,ModelMapper modelMapper){
+    public BillService(BillRepository billRepository,ModelMapper modelMapper){
         this.billRepository=billRepository;
         this.modelMapper=modelMapper;
     }
 
     @Override
-    public void createBill(UserDto userDto, BillDto billDto) {
-        if (billDto.getDueDate().before(new Date())) {
+    public BillDto createBill(UserDto userDto, BillCreateDto billCreateDto) {
+        if (billCreateDto.getDueDate().before(new Date())) {
             throw new IllegalArgumentException("Due date must be in the future");
         }
-        billDto.setStatus(BillStatus.PENDING);
-        billDto.setUserDto(userDto);
-        Bill bill = modelMapper.map(billDto,Bill.class);
-        billRepository.save(bill);
+        Bill bill = modelMapper.map(billCreateDto,Bill.class);
+        bill.setStatus(BillStatus.PENDING);
+        bill.setUser(modelMapper.map(userDto, User.class));
+        return modelMapper.map(billRepository.save(bill),BillDto.class);
     }
 
     @Override

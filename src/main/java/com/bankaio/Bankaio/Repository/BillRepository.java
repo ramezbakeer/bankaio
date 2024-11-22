@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface BillRepository extends JpaRepository<Bill,Long> {
-    Optional<Bill> findByUser_UserIdAndBillId(Long userId, Long BillId);
+    Optional<Bill> findByUser_UserIdAndBillId(Long userId, Long billId);
     List<Bill> findAllByUser_UserId(Long userId);
 }
