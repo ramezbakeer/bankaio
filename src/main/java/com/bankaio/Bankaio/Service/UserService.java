@@ -7,6 +7,7 @@ import com.bankaio.Bankaio.Entity.enums.TransactionType;
 import com.bankaio.Bankaio.Model.*;
 import org.modelmapper.ModelMapper;
 import com.bankaio.Bankaio.Repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,9 @@ public class UserService implements UserServiceInt {
     private final AccountServiceInt accountService;
     private final LoanServiceInt loanService;
     private final NotificationServiceInt notificationService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository,NotificationServiceInt notificationService,LoanServiceInt loanService,AccountServiceInt accountService,TransactionServiceInt transactionService,BillServiceInt billService, ModelMapper modelMapper){
+    public UserService(UserRepository userRepository,NotificationServiceInt notificationService,LoanServiceInt loanService,AccountServiceInt accountService,TransactionServiceInt transactionService,BillServiceInt billService, ModelMapper modelMapper,PasswordEncoder passwordEncoder){
         this.userRepository=userRepository;
         this.modelMapper = modelMapper;
         this.transactionService=transactionService;
@@ -29,11 +31,13 @@ public class UserService implements UserServiceInt {
         this.accountService=accountService;
         this.loanService=loanService;
         this.notificationService=notificationService;
+        this.passwordEncoder=passwordEncoder;
     }
 
     @Override
     public UserDto createUser(UserRequestDto userRequestDto) {
         User user = modelMapper.map(userRequestDto, User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return modelMapper.map(userRepository.save(user),UserDto.class);
     }
@@ -41,6 +45,11 @@ public class UserService implements UserServiceInt {
     @Override
     public UserDto viewProfile(Long userId) {
         return modelMapper.map(userRepository.findById(userId).orElseThrow(()->new RuntimeException("no User Found")),UserDto.class);
+    }
+
+    @Override
+    public List<UserDto> userSummary() {
+        return userRepository.findAll().stream().map(user->modelMapper.map(user,UserDto.class)).toList();
     }
 
     @Override

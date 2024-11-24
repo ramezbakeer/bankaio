@@ -7,6 +7,7 @@ import java.util.List;
 public interface UserServiceInt {
     UserDto createUser(UserRequestDto userRequestDto);
     UserDto viewProfile(Long userId);
+    List<UserDto> userSummary();
     void updateProfile(Long userId, UserUpdateDto updatedDetails);
     void deleteUser(Long userId);
     TransactionDTO transferFund(Long userId, Long fromAccountId, TransferDto transferDto);
